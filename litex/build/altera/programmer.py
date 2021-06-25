@@ -16,6 +16,8 @@ class USBBlaster(GenericProgrammer):
         self.device_id  = device_id
 
     def load_bitstream(self, bitstream_file, cable_suffix=""):
+        self.call(["jtagconfig", "--setparam", "1", "JtagClock", "6M"])
+        self.call(["jtagconfig", "--enum"])
         self.call(["quartus_pgm",
             "-m", "jtag",
              "-c", "{}{}".format(self.cable_name, cable_suffix),
