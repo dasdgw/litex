@@ -6,6 +6,7 @@ from litex.soc.cores.clock.xilinx_usp import USPPLL, USPMMCM, USPIDELAYCTRL
 
 # Intel
 from litex.soc.cores.clock.intel_max10     import Max10PLL
+from litex.soc.cores.clock.intel_cyclone2  import CycloneIIPLL
 from litex.soc.cores.clock.intel_cyclone4  import CycloneIVPLL
 from litex.soc.cores.clock.intel_cyclone5  import CycloneVPLL
 from litex.soc.cores.clock.intel_cyclone10 import Cyclone10LPPLL
