@@ -76,7 +76,7 @@ class SoCRegion:
             self.logger.error("Origin needs to be aligned on size:")
             self.logger.error(self)
             raise SoCError()
-        if not self.decode or (origin == 0) and (size == 2**bus.address_width):
+        if (not self.decode) or ((origin == 0) and (size == 2**bus.address_width)):
             return lambda a: True
         origin >>= int(log2(bus.data_width//8)) # bytes to words aligned.
         size   >>= int(log2(bus.data_width//8)) # bytes to words aligned.
@@ -490,6 +490,17 @@ class SoCBusHandler(LiteXModule):
                     slave  = next(iter(self.slaves.values())))
             # Otherwise, use InterconnectShared/Crossbar.
             else:
+                # Check Region decoder use.
+                if len(self.regions) > 1:
+                    for region in self.regions.values():
+                        if region.decode == False:
+                            self.logger.error("Only {} Region can be used when {} Decoder.".format(
+                                colorer("one",       color="red"),
+                                colorer("disabling", color="red"),
+                            ))
+                            self.logger.error(self)
+                            raise SoCError()
+                # Interconnect Logic.
                 interconnect_cls = {
                     "shared"  : interconnect_shared_cls,
                     "crossbar": interconnect_crossbar_cls,
