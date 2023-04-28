@@ -73,9 +73,10 @@ def generate_dts(d, initrd_start=None, initrd_size=None, initrd=None, root_devic
 
     dts += """
         chosen {{
-            bootargs = "{console} {rootfs}";""".format(
-    console = "console=liteuart earlycon=liteuart,0x{:x}".format(d["csr_bases"]["uart"]),
-    rootfs  = "rootwait root=/dev/{}".format(root_device))
+            bootargs = "{console} {rootfs} {nfsroot}";""".format(
+                console = "console=liteuart earlycon=liteuart,0x{:x}".format(d["csr_bases"]["uart"]),
+                rootfs  = "rootwait root=/dev/{}".format(root_device),
+                nfsroot = "nfsroot=192.168.1.100:/srv/pano_rootfs,v3,tcp ip=192.168.1.50:192.168.1.100::255.255.255.0:::off::: debug")
 
     if initrd_enabled is True:
         dts += """
