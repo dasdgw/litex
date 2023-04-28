@@ -189,11 +189,11 @@ static void process_arp(void)
 	const struct arp_frame *rx_arp = &rxbuffer->frame.contents.arp;
 	struct arp_frame *tx_arp = &txbuffer->frame.contents.arp;
 
-	if(rxlen < ARP_PACKET_LENGTH) return;
-	if(ntohs(rx_arp->hwtype) != ARP_HWTYPE_ETHERNET) return;
-	if(ntohs(rx_arp->proto) != ARP_PROTO_IP) return;
-	if(rx_arp->hwsize != 6) return;
-	if(rx_arp->protosize != 4) return;
+	if(rxlen < ARP_PACKET_LENGTH) {printf("ARP too short\n"); return;}
+	if(ntohs(rx_arp->hwtype) != ARP_HWTYPE_ETHERNET) {printf("wrong ethertype\n");return;}
+	if(ntohs(rx_arp->proto) != ARP_PROTO_IP) {printf("not ip\n");return;}
+	if(rx_arp->hwsize != 6) {printf("wrong hwsize\n");return;}
+	if(rx_arp->protosize != 4) {printf("wrong protosize\n");return;}
 
 	if(ntohs(rx_arp->opcode) == ARP_OPCODE_REPLY) {
 		if(ntohl(rx_arp->sender_ip) == cached_ip) {
