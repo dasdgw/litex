@@ -151,7 +151,7 @@ Provides definitions/modules to build cores (bus, bank, flow), cores and tools t
 2. Install Migen/LiteX and the LiteX's cores:
 
 ```sh
-$ wget https://raw.githubusercontent.com/enjoy-digital/litex/master/litex_setup.py
+$ wget https://raw.githubusercontent.com/dasdgw/litex/pano_logic_g2/litex_setup.py
 $ chmod +x litex_setup.py
 $ ./litex_setup.py --init --install --user (--user to install to user directory) --config=(minimal, standard, full)
 ```

@@ -76,7 +76,7 @@ git_repos = {
     # ------------------
     "pythondata-software-picolibc":    GitRepo(url="https://github.com/litex-hub/", clone="recursive"),
     "pythondata-software-compiler_rt": GitRepo(url="https://github.com/litex-hub/"),
-    "litex":                           GitRepo(url="https://github.com/enjoy-digital/", tag=True),
+    "litex":                           GitRepo(url="https://github.com/dasdgw/", branch="pano_logic_g2", tag=True),
 
     # LiteX Cores Ecosystem.
     # ----------------------
@@ -96,7 +96,7 @@ git_repos = {
 
     # LiteX Boards.
     # -------------
-    "litex-boards": GitRepo(url="https://github.com/litex-hub/", clone="regular", tag=True),
+    "litex-boards": GitRepo(url="https://github.com/dasdgw/", clone="regular", tag=True),
 
     # LiteX pythondata.
     # -----------------
