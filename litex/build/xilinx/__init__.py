@@ -1,5 +1,6 @@
 # Platforms.
 from litex.build.xilinx.platform import XilinxPlatform
+from litex.build.xilinx.platform import XilinxSpartan3Platform
 from litex.build.xilinx.platform import XilinxSpartan6Platform
 from litex.build.xilinx.platform import Xilinx7SeriesPlatform
 from litex.build.xilinx.platform import XilinxUSPlatform

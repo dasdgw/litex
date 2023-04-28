@@ -1,4 +1,5 @@
 # Xilinx
+from litex.soc.cores.clock.xilinx_s3  import S3PLL,  S3DCM
 from litex.soc.cores.clock.xilinx_s6  import S6PLL,  S6DCM
 from litex.soc.cores.clock.xilinx_s7  import S7PLL,  S7MMCM,  S7IDELAYCTRL
 from litex.soc.cores.clock.xilinx_us  import USPLL,  USMMCM,  USIDELAYCTRL

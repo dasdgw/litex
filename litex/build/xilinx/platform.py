@@ -20,6 +20,7 @@ class XilinxPlatform(GenericPlatform):
     }
 
     _supported_toolchains = {
+        "spartan3"    : ["ise"],
         "spartan6"    : ["ise"],
         "7series"     : ["vivado", "f4pga", "yosys+nextpnr"],
         "ultrascale"  : ["vivado"],
@@ -64,7 +65,7 @@ class XilinxPlatform(GenericPlatform):
 
     def get_verilog(self, *args, special_overrides=dict(), **kwargs):
         so = dict(common.xilinx_special_overrides)
-        if self.device[:3] == "xc6":
+        if (self.device[:3] == "xc3") or (self.device[:3] == "xc6"):
             so.update(common.xilinx_s6_special_overrides)
         if self.device[:3] == "xc7":
             so.update(common.xilinx_s7_special_overrides)
@@ -131,6 +132,11 @@ class XilinxPlatform(GenericPlatform):
             return vivado.vivado_build_argdict(args)
         else:
             return dict()
+
+# XilinxSpartan3Platform ---------------------------------------------------------------------------
+
+class XilinxSpartan3Platform(XilinxPlatform):
+    device_family = "spartan3"
 
 # XilinxSpartan6Platform ---------------------------------------------------------------------------
 
