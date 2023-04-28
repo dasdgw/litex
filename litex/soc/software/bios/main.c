@@ -202,6 +202,7 @@ __attribute__((__used__)) int main(int i, char **c)
 
 	/* Initialize Video Framebuffer FIXME: Move */
 #ifdef CSR_VIDEO_FRAMEBUFFER_BASE
+	printf("--======== \e[1mVIDEO_FRAMEBUFFER init\e[0m ======--\n");
 	video_framebuffer_vtg_enable_write(0);
 	video_framebuffer_dma_enable_write(0);
 	video_framebuffer_vtg_enable_write(1);
