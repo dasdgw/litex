@@ -747,7 +747,7 @@ class VideoFrameBuffer(LiteXModule):
 # Generic (Very Generic PHY supporting VGA/DVI and variations).
 
 class VideoGenericPHY(LiteXModule):
-    def __init__(self, pads, clock_domain="sys", with_clk_ddr_output=True):
+    def __init__(self, pads, clock_domain="sys", with_clk_ddr_output=True, output_mode="default", clk_clock_domain="sys"):
         self.sink = sink = stream.Endpoint(video_data_layout)
 
         # # #
@@ -758,9 +758,13 @@ class VideoGenericPHY(LiteXModule):
         # Drive Clk.
         if hasattr(pads, "clk"):
             if with_clk_ddr_output:
-                self.specials += DDROutput(i1=1, i2=0, o=pads.clk, clk=ClockSignal(clock_domain))
+                self.specials += DDROutput(i1=1, i2=0, o=pads.clk, clk=ClockSignal(clk_clock_domain))
             else:
-                self.comb += pads.clk.eq(ClockSignal(clock_domain))
+                self.comb += pads.clk.eq(ClockSignal(clk_clock_domain))
+
+        # keep hdmi out of reset
+        if hasattr(pads, "rst_n"):
+            self.comb += pads.rst_n.eq(1)
 
         # Drive Controls.
         if hasattr(pads, "de"):
@@ -773,13 +777,25 @@ class VideoGenericPHY(LiteXModule):
             self.specials += SDROutput(i=sink.vsync,  o=pads.vsync,   clk=ClockSignal(clock_domain))
 
         # Drive Datas.
-        cbits  = len(pads.r)
-        cshift = (8 - cbits)
-        for i in range(cbits):
-            # VGA monitors interpret minimum value as black so ensure data is set to 0 during blanking.
-            self.specials += SDROutput(i=sink.r[cshift + i] & sink.de, o=pads.r[i], clk=ClockSignal(clock_domain))
-            self.specials += SDROutput(i=sink.g[cshift + i] & sink.de, o=pads.g[i], clk=ClockSignal(clock_domain))
-            self.specials += SDROutput(i=sink.b[cshift + i] & sink.de, o=pads.b[i], clk=ClockSignal(clock_domain))
+        if (output_mode == "default"):
+            cbits  = len(pads.r)
+            cshift = (8 - cbits)
+            for i in range(cbits):
+                # VGA monitors interpret minimum value as black so ensure data is set to 0 during blanking.
+                self.specials += SDROutput(i=sink.r[cshift + i] & sink.de, o=pads.r[i], clk=ClockSignal(clock_domain))
+                self.specials += SDROutput(i=sink.g[cshift + i] & sink.de, o=pads.g[i], clk=ClockSignal(clock_domain))
+                self.specials += SDROutput(i=sink.b[cshift + i] & sink.de, o=pads.b[i], clk=ClockSignal(clock_domain))
+
+        # 12bit ddr mode
+        if (output_mode ==  "chrontel_idf_0"):
+            cbits  = 4
+            for i in range(cbits):
+                # VGA monitors interpret minimum value as black so ensure data is set to 0 during blanking.
+                self.specials += DDROutput(i1=sink.g[i] & sink.de, i2=sink.r[4 + i] & sink.de, o=pads.d[8 + i], clk=ClockSignal(clock_domain))
+                self.specials += DDROutput(i1=sink.b[4 + i] & sink.de, i2=sink.r[i] & sink.de, o=pads.d[4 + i], clk=ClockSignal(clock_domain))
+                self.specials += DDROutput(i1=sink.b[i] & sink.de, i2=sink.g[4 + i] & sink.de, o=pads.d[i], clk=ClockSignal(clock_domain))
+
+
 
 # VGA (Generic).
 
