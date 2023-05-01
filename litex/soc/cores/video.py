@@ -545,6 +545,7 @@ class VideoTerminal(LiteXModule):
             uart_sink.ready.eq(1),
             term_wrport.we.eq(1),
             term_wrport.dat_w[:font_width].eq(uart_sink.data),
+            # todo add backspace / delete -> don't INCR-X, delete last char and DECR-X?
             NextState("INCR-X")
         )
         uart_fsm.act("RST-X",
