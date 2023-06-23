@@ -17,7 +17,7 @@ setup(
     author="Florent Kermarrec",
     author_email="florent@enjoy-digital.fr",
     url="http://enjoy-digital.fr",
-    download_url="https://github.com/enjoy-digital/litex",
+    download_url="https://github.com/dasdgw/litex",
     test_suite="test",
     license="BSD",
     python_requires="~=3.6",
